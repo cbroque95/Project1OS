@@ -1,6 +1,6 @@
-// synch.cc 
+// synch.cc
 //	Routines for synchronizing threads.  Three kinds of
-//	synchronization routines are defined here: semaphores, locks 
+//	synchronization routines are defined here: semaphores, locks
 //   	and condition variables (the implementation of the last two
 //	are left to the reader).
 //
@@ -18,7 +18,7 @@
 // that be disabled or enabled).
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
@@ -65,14 +65,14 @@ void
 Semaphore::P()
 {
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
-    
+
     while (value == 0) { 			// semaphore not available
 	queue->Append((void *)currentThread);	// so go to sleep
 	currentThread->Sleep();
-    } 
-    value--; 					// semaphore available, 
+    }
+    value--; 					// semaphore available,
 						// consume its value
-    
+
     (void) interrupt->SetLevel(oldLevel);	// re-enable interrupts
 }
 
@@ -97,13 +97,51 @@ Semaphore::V()
     (void) interrupt->SetLevel(oldLevel);
 }
 
-// Dummy functions -- so we can compile our later assignments 
-// Note -- without a correct implementation of Condition::Wait(), 
+// Dummy functions -- so we can compile our later assignments
+// Note -- without a correct implementation of Condition::Wait(),
 // the test case in the network assignment won't work!
-Lock::Lock(const char* debugName) {}
-Lock::~Lock() {}
-void Lock::Acquire() {}
-void Lock::Release() {}
+Lock::Lock(const char* debugName) {
+    name = debugName;
+    free = true;
+    queue = new List;
+}
+Lock::~Lock() {
+    delete queue;
+}
+
+void Lock::Acquire() {
+
+    // Disable interrupts -- similar to Semaphore P()
+
+    // Check if lock is free
+
+    // If yes, make the lock not free anymore
+    free = false;
+
+    // Else, lock is not free -- add self to queue
+    // (keep checking for free lock while)
+
+    // Enable interrupts
+}
+void Lock::Release() {
+
+    // disable interrupts
+
+    // check if thread has lock ... isHeldByCurrentThread ?
+
+    // If not, do nothing
+
+    free = true;
+
+    // If yes, release the lock and wakeup 1 of the waiting threads in queue
+
+    // enable interrupts
+
+}
+
+bool Lock::isHeldByCurrentThread() {
+
+}
 
 Condition::Condition(const char* debugName) { }
 Condition::~Condition() { }

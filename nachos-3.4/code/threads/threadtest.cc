@@ -57,6 +57,27 @@ ThreadTest1()
 // 	Invoke a test routine.
 //----------------------------------------------------------------------
 
+#ifdef HW1_SEMAPHORES
+
+int numThreadsActive; // used to implement barrier upon completion
+
+void
+ThreadTest(int n) {
+    DEBUG('t', "Entering SimpleTest");
+    Thread *t;
+    numThreadsActive = n;
+    printf("NumthreadsActive = %d\n", numThreadsActive);
+
+    for(int i=1; i<n; i++)
+    {
+        t = new Thread("forked thread");
+        t->Fork(SimpleThread,i);
+    }
+    SimpleThread(0);
+}
+
+#else 
+
 void
 ThreadTest()
 {
@@ -70,3 +91,4 @@ ThreadTest()
     }
 }
 
+#endif 
