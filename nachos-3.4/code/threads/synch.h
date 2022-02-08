@@ -135,5 +135,7 @@ class Condition {
   private:
     const char* name;
     // plus some other stuff you'll need to define
+    List *queue;       // threads waiting on the condition variable
+
 };
 #endif // SYNCH_H
