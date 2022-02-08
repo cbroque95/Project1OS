@@ -156,7 +156,7 @@ Condition::~Condition() {
 void Condition::Wait(Lock* conditionLock) {
 
     // check if calling thread holds the lock
-    ASSERT(conditionLock.isHeldByCurrentThread());
+    ASSERT(conditionLock->isHeldByCurrentThread());
 
     // Release the lock
 
@@ -168,7 +168,7 @@ void Condition::Wait(Lock* conditionLock) {
 void Condition::Signal(Lock* conditionLock) {
 
     // check if calling thread holds the lock
-    ASSERT(conditionLock.isHeldByCurrentThread());
+    ASSERT(conditionLock->isHeldByCurrentThread());
 
     // Dequeue one of the threads in the queue
 
@@ -178,7 +178,7 @@ void Condition::Signal(Lock* conditionLock) {
 void Condition::Broadcast(Lock* conditionLock) {
 
     // check if calling thread holds the lock
-    ASSERT(conditionLock.isHeldByCurrentThread());
+    ASSERT(conditionLock->isHeldByCurrentThread());
 
     // Dequeue all threads in the queue one-by-one
 
