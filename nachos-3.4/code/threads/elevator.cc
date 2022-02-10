@@ -2,6 +2,8 @@
 #include "system.h"
 
 
+int nextPersonID = 1;
+
 
 typedef struct Person {
     int id;
@@ -31,7 +33,7 @@ void PersonThread(int person) {
 }
 
 int getNextPersonID() {
-    return 0;
+    return nextPersonID++;
 }
 
 
